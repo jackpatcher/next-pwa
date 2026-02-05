@@ -55,7 +55,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const user = {
     name: 'Hizrian',
     role: 'Administrator',
-    avatar: '/icons/avatar.png', // put your avatar image in public/icons/avatar.png
+    avatar: 'https://avatars.githubusercontent.com/u/9919?v=4', // ตัวอย่าง avatar จาก GitHub
   };
 
   return (

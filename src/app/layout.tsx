@@ -5,7 +5,7 @@ import "../../public/fonts/thsarabun.css";
 
 export const metadata = {
   title: "Admin PWA",
-  manifest: "/next-pwa/manifest.json", // อย่าลืมใส่ basePath นำหน้า
+  manifest: "/next-pwa/manifest.json",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
