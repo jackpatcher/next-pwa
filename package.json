@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build --webpack",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d out/next-pwa"
+    "deploy": "gh-pages -d out"
   },
   "dependencies": {
     "@ducanh2912/next-pwa": "^10.2.9",
