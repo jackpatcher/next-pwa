@@ -9,7 +9,7 @@ type AdminLayoutProps = {
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [fontSize, setFontSize] = useState(22);
+  const [fontSize, setFontSize] = useState(30);
   const pathname = usePathname();
 
   // Sidebar menu config (icon, name, href, badge, badgeColor)
@@ -100,26 +100,38 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               icon = React.cloneElement(iconElement, { className: iconClass.trim() });
             }
             return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={
-                  `relative flex items-center px-7 py-4 group transition-colors rounded-lg ` +
-                  (active ? "bg-blue-50" : "hover:bg-blue-50")
-                }
-                style={{ fontSize: fontSize, minHeight: fontSize * 2.2 }}
-              >
-                {/* Left color bar */}
-                <span className={`absolute left-0 top-2 h-[70%] w-1 rounded-r-lg transition-all duration-200 ${active ? "bg-blue-500" : "bg-transparent"}`} />
-                {/* Icon */}
-                {icon}
-                {/* Name */}
-                <span className={`flex-1 font-semibold ${active ? "text-blue-600" : "text-gray-700"}`}>{item.name}</span>
-                {/* Badge */}
-                {item.badge !== undefined && (
-                  <span className={`ml-2 px-2 py-0.5 rounded-full text-xs font-semibold ${item.badgeColor}`}>{item.badge}</span>
+              <React.Fragment key={item.href}>
+                <Link
+                  href={item.href}
+                  className={
+                    `relative flex items-center px-7 py-4 group transition-colors rounded-lg ` +
+                    (active ? "bg-blue-50" : "hover:bg-blue-50")
+                  }
+                  style={{ fontSize: fontSize, minHeight: fontSize * 2.2 }}
+                >
+                  {/* Left color bar */}
+                  <span className={`absolute left-0 top-2 h-[70%] w-1 rounded-r-lg transition-all duration-200 ${active ? "bg-blue-500" : "bg-transparent"}`} />
+                  {/* Icon */}
+                  {icon}
+                  {/* Name */}
+                  <span className={`flex-1 font-semibold ${active ? "text-blue-600" : "text-gray-700"}`}>{item.name}</span>
+                  {/* Badge */}
+                  {item.badge !== undefined && (
+                    <span className={`ml-2 px-2 py-0.5 rounded-full text-xs font-semibold ${item.badgeColor}`}>{item.badge}</span>
+                  )}
+                </Link>
+                {/* Sub nav for /user */}
+                {item.href === '/user/' && (current === '/user' || current.startsWith('/user/')) && (
+                  <div className="ml-12 flex flex-col gap-1">
+                    <Link
+                      href="/user/admin"
+                      className={`py-1 px-2 rounded transition-colors ${current === '/user/admin' ? 'bg-blue-100 text-blue-600' : 'text-gray-600 hover:bg-gray-100'}`}
+                    >
+                      Admin
+                    </Link>
+                  </div>
                 )}
-              </Link>
+              </React.Fragment>
             );
           })}
         </nav>
