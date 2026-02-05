@@ -1,13 +1,13 @@
 /* thsarabun.css */
 @font-face {
   font-family: 'TH Sarabun New';
-  src: url('/fonts/THSarabunNew.ttf') format('truetype');
+  src: url('/next-pwa/fonts/THSarabunNew.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'TH Sarabun New';
-  src: url('/fonts/THSarabunNew-Bold.ttf') format('truetype');
+  src: url('/next-pwa/fonts/THSarabunNew-Bold.ttf') format('truetype');
   font-weight: bold;
   font-style: normal;
 }
