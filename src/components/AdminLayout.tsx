@@ -1,7 +1,55 @@
 "use client";
+// SVG icon components
+function HomeIcon({ color = "currentColor", size = 22 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 12l9-9 9 9" />
+      <path d="M9 21V9h6v12" />
+      <path d="M3 12h18" />
+    </svg>
+  );
+}
+function UserIcon({ color = "currentColor", size = 22 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 20c0-4 8-4 8-4s8 0 8 4" />
+    </svg>
+  );
+}
+function AdminIcon({ color = "currentColor", size = 22 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="11" width="18" height="10" rx="2" />
+      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+    </svg>
+  );
+}
+function CogIcon({ color = "currentColor", size = 22 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="3" />
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 8.6 15a1.65 1.65 0 0 0-1.82-.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0 .33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 15 8.6a1.65 1.65 0 0 0 1.82.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 15z" />
+    </svg>
+  );
+}
+function InfoIcon({ color = "currentColor", size = 22 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <line x1="12" y1="16" x2="12" y2="12" />
+      <line x1="12" y1="8" x2="12" y2="8" />
+    </svg>
+  );
+}
 import React, { useState } from 'react';
 import Link from 'next/link';
+
+import { useFontSize } from '../app/fontSizeContext';
+import { useTheme } from '../app/themeContext';
 import { usePathname } from 'next/navigation';
+
+
 
 type AdminLayoutProps = {
   children: React.ReactNode;
@@ -9,8 +57,17 @@ type AdminLayoutProps = {
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [fontSize, setFontSize] = useState(30);
+  const { fontSize, setFontSize } = useFontSize();
   const pathname = usePathname();
+  const { theme } = useTheme();
+  // Provide fallback values for theme properties
+  const themeBackground = (theme as any)?.background || '#fff';
+  const themeText = theme.text || '#222';
+  const themePrimary = theme.primary || '#0070f3';
+  const themeAccent = (theme as any)?.accent || themePrimary;
+  const themeHeader = (theme as any)?.header || themeBackground;
+  const themeSurface = (theme as any)?.surface || '#f5f5f5';
+  const themeOnAccent = (theme as any)?.onAccent || '#fff';
 
   // Sidebar menu config (icon, name, href, badge, badgeColor)
   type MenuItem = {
@@ -19,116 +76,183 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     icon: React.ReactElement;
     badge?: string | number;
     badgeColor?: string;
+    sub?: MenuItem[];
   };
+  // Best practice: use basePath from env, and next/link for navigation
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
   const menuItems: MenuItem[] = [
     {
-      name: 'Dashboard',
-      href: '/',
-      icon: (
-        <svg className="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6" /></svg>
-      ),
+      name: "Dashboard",
+      href: `${basePath}/`,
+      icon: <HomeIcon color={themePrimary} />,
     },
     {
-      name: 'User',
-      href: '/user/',
-      icon: (
-        <svg className="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
-      ),
+      name: "User",
+      href: `${basePath}/user`,
+      icon: <UserIcon color={themePrimary} />,
+      sub: [
+        {
+          name: "Admin",
+          href: `${basePath}/user/admin`,
+          icon: <AdminIcon color={themePrimary} />,
+          badge: "New",
+          badgeColor: themeAccent,
+        },
+      ],
     },
     {
-      name: 'Setting',
-      href: '/setting/',
-      icon: (
-        <svg className="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M11.25 3c.414 0 .75.336.75.75v1.086a7.001 7.001 0 013.364 1.39l.77-.77a.75.75 0 111.06 1.06l-.77.77a7.001 7.001 0 011.39 3.364h1.086a.75.75 0 010 1.5h-1.086a7.001 7.001 0 01-1.39 3.364l.77.77a.75.75 0 11-1.06 1.06l-.77-.77a7.001 7.001 0 01-3.364 1.39v1.086a.75.75 0 01-1.5 0v-1.086a7.001 7.001 0 01-3.364-1.39l-.77.77a.75.75 0 11-1.06-1.06l.77-.77a7.001 7.001 0 01-1.39-3.364H3.75a.75.75 0 010-1.5h1.086a7.001 7.001 0 011.39-3.364l-.77-.77a.75.75 0 111.06-1.06l.77.77A7.001 7.001 0 0111.25 4.836V3.75c0-.414.336-.75.75-.75z" /></svg>
-      ),
+      name: "Setting",
+      href: `${basePath}/setting`,
+      icon: <CogIcon color={themePrimary} />,
     },
     {
-      name: 'About',
-      href: '/about/',
-      icon: (
-        <svg className="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M12 20.5a8.5 8.5 0 100-17 8.5 8.5 0 000 17z" /></svg>
-      ),
+      name: "About",
+      href: `${basePath}/about`,
+      icon: <InfoIcon color={themePrimary} />,
     },
   ];
 
-  // Sidebar user info
-  const user = {
-    name: 'Hizrian',
-    role: 'Administrator',
-    avatar: 'https://avatars.githubusercontent.com/u/9919?v=4', // ตัวอย่าง avatar จาก GitHub
-  };
+  // Helper: normalize path for active menu check
+  function normalizePath(path: string) {
+    // Remove trailing slash except root
+    if (path.length > 1 && path.endsWith('/')) return path.slice(0, -1);
+    return path;
+  }
+
+  // Sidebar and header styles
+  const sidebarStyle = {
+    background: themeBackground,
+    color: themeText,
+    width: isOpen ? 220 : 60,
+    transition: "width 0.2s",
+    fontSize,
+  } as React.CSSProperties;
+  const headerStyle = {
+    background: themeHeader,
+    color: themeText,
+    fontSize,
+  } as React.CSSProperties;
+  const iconStyle = {
+    color: themePrimary,
+    fontSize: 22,
+  } as React.CSSProperties;
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div style={{ display: "flex", minHeight: "100vh", background: themeBackground }}>
       {/* Sidebar */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform ${isOpen ? "translate-x-0" : "-translate-x-full"} transition-transform lg:relative lg:translate-x-0 flex flex-col`}>
-        <div className="flex items-center gap-2 px-6 py-4 border-b border-gray-100">
-          <span className="text-xl font-bold text-gray-700">Ready Dashboard</span>
-        </div>
-        {/* User Profile */}
-        <div className="flex items-center gap-3 px-6 py-4 border-b border-gray-100">
-          <img src={user.avatar} alt="avatar" className="w-10 h-10 rounded-full object-cover border" />
-          <div className="flex flex-col">
-            <span className="font-semibold text-gray-800 leading-tight">{user.name}</span>
-            <span className="text-xs text-gray-400">{user.role}</span>
+      <aside style={{
+        ...sidebarStyle,
+        background: '#fff',
+        boxShadow: '0 2px 8px #0001',
+        borderRight: '1px solid #eee',
+        minWidth: 220,
+        maxWidth: 320,
+        width: 'clamp(220px, 18vw, 320px)',
+        height: '100vh',
+        overflowY: 'auto',
+        position: 'sticky',
+        top: 0,
+      }}>
+        {/* Profile/Logo section */}
+        <div style={{ padding: 24, display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+          <div style={{ width: 48, height: 48, borderRadius: "50%", background: themeSurface, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 8px #0001" }}>
+            <img src="https://avatars.githubusercontent.com/u/1?v=4" alt="Avatar" style={{ width: 36, height: 36, borderRadius: "50%" }} />
           </div>
+          <div style={{ fontWeight: 600, fontSize: 16, color: themeText }}>Am Geradt</div>
+          <div style={{ fontSize: 13, color: themeAccent, fontWeight: 500 }}>Administrator</div>
         </div>
-        {/* Menu */}
-        <nav className="flex-1 mt-2 flex flex-col gap-2">
+        <nav style={{ display: "flex", flexDirection: "column", gap: 2, padding: "8px 0" }}>
           {menuItems.map((item) => {
-            // Normalize trailing slashes for comparison
-            const normalize = (str: string) => {
-              if (!str) return '/';
-              // Remove trailing and leading slashes, but keep root
-              if (str === '/') return '/';
-              return '/' + str.replace(/^\/+|\/+$/g, '');
-            };
-            const current = normalize(pathname);
-            const href = normalize(item.href);
-            const active = href === '/'
-              ? current === '/'
-              : current === href || current.startsWith(href + '/');
-            // Merge className for SVG icons safely
-            let icon = item.icon;
-            if (React.isValidElement(item.icon)) {
-              const iconElement = item.icon as React.ReactElement<any, any>;
-              const prevClass = (iconElement.props.className || '');
-              // If active, force icon to blue-500, else use original
-              const iconClass = active
-                ? `w-7 h-7 mr-3 text-blue-500`
-                : `w-7 h-7 mr-3 ${prevClass}`;
-              icon = React.cloneElement(iconElement, { className: iconClass.trim() });
-            }
+            const isActive = normalizePath(pathname) === normalizePath(item.href);
+            const isUserMenu = item.name === "User";
+            const isUserActive = normalizePath(pathname).startsWith(normalizePath(item.href));
             return (
-              <React.Fragment key={item.href}>
+              <React.Fragment key={item.name}>
                 <Link
                   href={item.href}
-                  className={
-                    `relative flex items-center px-7 py-4 group transition-colors rounded-lg ` +
-                    (active ? "bg-blue-50" : "hover:bg-blue-50")
-                  }
-                  style={{ fontSize: fontSize, minHeight: fontSize * 2.2 }}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 14,
+                    padding: "12px 20px",
+                    borderRadius: 12,
+                    fontWeight: 600,
+                    fontSize: 16,
+                    color: isActive || (isUserMenu && isUserActive) ? themeAccent : themeText,
+                    background: isActive || (isUserMenu && isUserActive) ? themeSurface : "none",
+                    boxShadow: isActive || (isUserMenu && isUserActive) ? "0 2px 8px #0001" : "none",
+                    textDecoration: "none",
+                    marginBottom: 2,
+                    transition: "background 0.2s, color 0.2s",
+                  }}
+                  onMouseOver={e => e.currentTarget.style.background = themeSurface}
+                  onMouseOut={e => e.currentTarget.style.background = isActive || (isUserMenu && isUserActive) ? themeSurface : "none"}
                 >
-                  {/* Left color bar */}
-                  <span className={`absolute left-0 top-2 h-[70%] w-1 rounded-r-lg transition-all duration-200 ${active ? "bg-blue-500" : "bg-transparent"}`} />
-                  {/* Icon */}
-                  {icon}
-                  {/* Name */}
-                  <span className={`flex-1 font-semibold ${active ? "text-blue-600" : "text-gray-700"}`}>{item.name}</span>
-                  {/* Badge */}
-                  {item.badge !== undefined && (
-                    <span className={`ml-2 px-2 py-0.5 rounded-full text-xs font-semibold ${item.badgeColor}`}>{item.badge}</span>
+                  <span style={{ ...iconStyle, minWidth: 22 }}>{item.icon}</span>
+                  <span style={{ marginLeft: 8, fontWeight: 600 }}>{item.name}</span>
+                  {item.badge && (
+                    <span
+                      style={{
+                        marginLeft: "auto",
+                        background: item.badgeColor,
+                        color: themeOnAccent,
+                        borderRadius: 12,
+                        padding: "2px 8px",
+                        fontSize: 12,
+                        fontWeight: 500,
+                      }}
+                    >
+                      {item.badge}
+                    </span>
                   )}
                 </Link>
-                {/* Sub nav for /user */}
-                {item.href === '/user/' && (current === '/user' || current.startsWith('/user/')) && (
-                  <div className="ml-12 flex flex-col gap-1">
-                    <Link
-                      href="/user/admin"
-                      className={`py-1 px-2 rounded transition-colors ${current === '/user/admin' ? 'bg-blue-100 text-blue-600' : 'text-gray-600 hover:bg-gray-100'}`}
-                    >
-                      Admin
-                    </Link>
+                {/* Sub-menu for User */}
+                {isUserMenu && isUserActive && item.sub && (
+                  <div style={{ marginLeft: 36, display: "flex", flexDirection: "column", gap: 0 }}>
+                    {item.sub.map((sub) => {
+                      const isSubActive = normalizePath(pathname) === normalizePath(sub.href);
+                      return (
+                        <Link
+                          key={sub.name}
+                          href={sub.href}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 10,
+                            padding: "10px 28px",
+                            borderRadius: 10,
+                            fontWeight: 600,
+                            fontSize: 15,
+                            color: isSubActive ? themeAccent : themeText,
+                            background: isSubActive ? themeSurface : "none",
+                            boxShadow: isSubActive ? "0 2px 8px #0001" : "none",
+                            textDecoration: "none",
+                            marginBottom: 0,
+                            transition: "background 0.2s, color 0.2s",
+                          }}
+                          onMouseOver={e => e.currentTarget.style.background = themeSurface}
+                          onMouseOut={e => e.currentTarget.style.background = isSubActive ? themeSurface : "none"}
+                        >
+                          <span style={{ ...iconStyle, fontSize: 18, minWidth: 18 }}>{sub.icon}</span>
+                          <span style={{ marginLeft: 8, fontWeight: 600 }}>{sub.name}</span>
+                          {sub.badge && (
+                            <span
+                              style={{
+                                marginLeft: "auto",
+                                background: sub.badgeColor,
+                                color: themeOnAccent,
+                                borderRadius: 12,
+                                padding: "2px 8px",
+                                fontSize: 11,
+                                fontWeight: 500,
+                              }}
+                            >
+                              {sub.badge}
+                            </span>
+                          )}
+                        </Link>
+                      );
+                    })}
                   </div>
                 )}
               </React.Fragment>
@@ -136,34 +260,36 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           })}
         </nav>
       </aside>
-
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col">
-        <header className="h-16 bg-white shadow flex items-center justify-between px-6">
-          <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden">☰</button>
-          <span className="font-semibold text-gray-700">ระบบจัดการ</span>
-          <div className="flex items-center gap-2">
+      {/* AppBar/Header */}
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+        <header style={{ height: 64, background: '#fff', boxShadow: '0 2px 8px #0001', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 32px', borderBottom: '1px solid #eee' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <span style={{ fontWeight: 700, fontSize: 22, color: themePrimary }}>Ready Dashboard</span>
+            <span style={{ fontWeight: 500, fontSize: 18, color: themeText }}>ระบบจัดการ</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <button
               aria-label="ลดขนาดฟอนต์"
-              className="w-8 h-8 flex items-center justify-center rounded-full bg-slate-200 text-lg font-bold hover:bg-slate-300 transition-all shadow"
-              onClick={() => setFontSize(f => Math.max(14, f - 2))}
-              style={{ lineHeight: 1 }}
+              style={{ width: 32, height: 32, borderRadius: '50%', background: '#f3f3f3', border: 'none', fontWeight: 700, fontSize: 18, color: themePrimary, cursor: 'pointer', marginRight: 4 }}
+              onClick={() => setFontSize(Math.max(14, fontSize - 2))}
             >
               -
             </button>
-            <span className="min-w-[32px] text-center text-base">{fontSize}px</span>
+            <span style={{ minWidth: 40, textAlign: 'center', fontSize: 16 }}>{fontSize}px</span>
             <button
               aria-label="เพิ่มขนาดฟอนต์"
-              className="w-8 h-8 flex items-center justify-center rounded-full bg-slate-200 text-lg font-bold hover:bg-slate-300 transition-all shadow"
-              onClick={() => setFontSize(f => Math.min(48, f + 2))}
-              style={{ lineHeight: 1 }}
+              style={{ width: 32, height: 32, borderRadius: '50%', background: '#f3f3f3', border: 'none', fontWeight: 700, fontSize: 18, color: themePrimary, cursor: 'pointer', marginLeft: 4 }}
+              onClick={() => setFontSize(Math.min(32, fontSize + 2))}
             >
               +
             </button>
-            <div className="w-8 h-8 bg-slate-300 rounded-full ml-2"></div>
+            <div style={{ width: 32, height: 32, borderRadius: '50%', background: '#e0e0e0', marginLeft: 8 }}></div>
           </div>
         </header>
-        <main className="p-6 overflow-auto" style={{ fontSize: fontSize }}>{children}</main>
+        {/* Main content */}
+        <main style={{ flex: 1, background: themeBackground, color: themeText, fontSize }}>
+          <div style={{ padding: 24 }}>{children}</div>
+        </main>
       </div>
     </div>
   );

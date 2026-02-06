@@ -1,10 +1,11 @@
 import AdminLayout from "../../../components/AdminLayout";
 
 export default function Page() {
+  const fontSize = 30;
   return (
     <AdminLayout>
       <div className="space-y-8">
-        <h1 className="text-3xl font-bold mb-4">Admin Dashboard</h1>
+        <h1 style={{ fontSize: fontSize * 1.1, fontWeight: 700, marginBottom: 16 }}>Admin Dashboard</h1>
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white rounded-lg shadow p-6 flex flex-col items-center">

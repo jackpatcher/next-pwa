@@ -1,7 +1,10 @@
+
+"use client";
 import AdminLayout from "@/components/AdminLayout";
+import { useFontSize } from "../fontSizeContext";
 
 function AboutContent() {
-  const fontSize = 30;
+  const { fontSize } = useFontSize();
   return (
     <>
       <h1 style={{ fontSize: fontSize * 1.1, fontWeight: 700, marginBottom: 16 }}>About Page</h1>

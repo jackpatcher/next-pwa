@@ -8,6 +8,7 @@ export const metadata = {
   manifest: "/next-pwa/manifest.json",
 };
 
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="th">
