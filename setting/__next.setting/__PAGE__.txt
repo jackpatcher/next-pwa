@@ -2,5 +2,5 @@
 2:I[86,["756","static/chunks/756-9d7b667c4f597940.js","409","static/chunks/app/setting/page-03c4fc98024a4a4e.js"],"default"]
 3:I[484,[],"OutletBoundary"]
 4:"$Sreact.suspense"
-0:{"buildId":"n9bSwkgr9wHAT_ME_JGpx","rsc":["$","$1","c",{"children":[["$","$L2",null,{"children":[["$","h1",null,{"style":{"fontSize":24,"fontWeight":700,"marginBottom":16},"children":"Setting Page"}],["$","p",null,{"style":{"fontSize":22},"children":"นี่คือหน้าตั้งค่า (Setting)"}]]}],null,["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"loading":null,"isPartial":false}
+0:{"buildId":"cOtpZ9QO9XtJ4hCBvui8W","rsc":["$","$1","c",{"children":[["$","$L2",null,{"children":[["$","h1",null,{"style":{"fontSize":24,"fontWeight":700,"marginBottom":16},"children":"Setting Page"}],["$","p",null,{"style":{"fontSize":22},"children":"นี่คือหน้าตั้งค่า (Setting)"}]]}],null,["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"loading":null,"isPartial":false}
 5:null
