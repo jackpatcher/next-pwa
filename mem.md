@@ -1,4 +1,10 @@
 
+## ปัญหาที่เจอ 
+คือ push ไปยัง gh page แล้วโหลด pwa บนมือถือ จะขึ้น 404 
+
+GitHub Pages ไม่เหมาะกับ Next.js PWA ที่ต้องการ routing เต็มรูปแบบ
+ถ้าอยากได้ประสบการณ์ PWA ที่ดี ควร deploy บน Vercel, Netlify หรือ Cloudflare Pages
+
 ## ติดตั้ง
 npx create-next-app@latest next-pwa --typescript --tailwind --eslint   
  

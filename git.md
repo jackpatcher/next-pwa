@@ -6,6 +6,6 @@ npm run deploy
 git init
 git remote add origin https://github.com/jackpatcher/next-pwa.git
 git add .
-git commit -m "theme "
+git commit -m "pwa on mobile error "
 git branch -M main
 git push -u origin main
